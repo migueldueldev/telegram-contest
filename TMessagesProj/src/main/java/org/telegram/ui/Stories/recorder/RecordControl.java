@@ -118,6 +118,7 @@ public class RecordControl extends View implements FlashViews.Invertable {
     private final AnimatedFloat dualT = new AnimatedFloat(this, 0, 330, CubicBezierInterpolator.EASE_OUT_QUINT);
 
     private static final long MAX_DURATION = 60 * 1000L;
+    private boolean isStoryMode = true;
     private long recordingStart;
     private long lastDuration;
 
@@ -125,6 +126,11 @@ public class RecordControl extends View implements FlashViews.Invertable {
     private final Point check1 = new Point(-dpf2(29/3.0f), dpf2(7/3.0f));
     private final Point check2 = new Point(-dpf2(8.5f/3.0f), dpf2(26/3.0f));
     private final Point check3 = new Point(dpf2(29/3.0f), dpf2(-11/3.0f));
+
+    public RecordControl(Context context, boolean storyMode) {
+        this(context);
+        isStoryMode = storyMode;
+    }
 
     public RecordControl(Context context) {
         super(context);
@@ -434,7 +440,7 @@ public class RecordControl extends View implements FlashViews.Invertable {
 
         long duration = System.currentTimeMillis() - recordingStart;
         float recordEndT = recording ? 0 : 1f - recordingLongT;
-        float sweepAngle = duration / (float) MAX_DURATION * 360;
+        float sweepAngle = (isStoryMode) ? duration / (float) MAX_DURATION * 360 : 360;
 
         float recordingLoading = this.recordingLoadingT.set(this.recordingLoading);
 
@@ -466,7 +472,7 @@ public class RecordControl extends View implements FlashViews.Invertable {
             if (duration / 1000L != lastDuration / 1000L) {
                 delegate.onVideoDuration(duration / 1000L);
             }
-            if (duration >= MAX_DURATION) {
+            if (isStoryMode && duration >= MAX_DURATION) {
                 post(() -> {
                     recording = false;
                     longpressRecording = false;

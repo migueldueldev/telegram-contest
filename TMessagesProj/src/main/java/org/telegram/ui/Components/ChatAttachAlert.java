@@ -2289,8 +2289,8 @@ public class ChatAttachAlert extends BottomSheet implements NotificationCenter.N
         mediaPreviewView.addView(mediaPreviewTextView, LayoutHelper.createLinear(LayoutHelper.WRAP_CONTENT, LayoutHelper.WRAP_CONTENT, Gravity.CENTER_VERTICAL));
 
         headerView.addView(mediaPreviewView, LayoutHelper.createFrame(LayoutHelper.WRAP_CONTENT, LayoutHelper.MATCH_PARENT));
-
-        layouts[0] = photoLayout = new ChatAttachAlertPhotoLayout(this, context, forceDarkTheme, needCamera, resourcesProvider);
+        Activity parentActivity = baseFragment.getParentActivity();
+        layouts[0] = photoLayout = new ChatAttachAlertPhotoLayout(this, context, parentActivity, currentAccount, forceDarkTheme, needCamera, resourcesProvider);
         photoLayout.setTranslationX(0);
         currentAttachLayout = photoLayout;
         selectedId = 1;
